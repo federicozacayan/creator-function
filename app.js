@@ -16,14 +16,9 @@ let components = [
 
 components.map(c => _(document.body, c))
 
-function App() {
-    return _('div','content')
+function Foo(){
+    return _('div','test')
 }
 
-let run = (param) => {
-    if (param instanceof Function) {
-        return param()
-    }
-    return param
-}
-console.log(run(App))
+console.log(_(Foo));
+

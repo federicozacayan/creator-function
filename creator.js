@@ -1,70 +1,91 @@
 import C from './C.js'
-let appendChild = (el, inner) => {
-    if (inner && inner.nodeType) {
-        el.appendChild(inner)
+let appendChild = (parameters) => {
+    if (parameters[1] && parameters[1].nodeType) {
+        parameters[0].appendChild(parameters[1])
     }
-    return el
+    return parameters
 }
 
-let innerText = (el, inner) =>{
-    if (typeof inner === 'string') {
-        el.innerText = inner
+let innerText = (parameters) => {
+    if (typeof parameters[1] === 'string') {
+        parameters[0].innerText = parameters[1]
     }
-    return el
+    return parameters
 }
 
-let setAttribute = (el, params) => {
-    if (typeof params === 'object') {
-        for (const key in params) {
-            el.setAttribute(key, params[key])
+let setAttribute = (parameters) => {
+    if (typeof parameters[2] === 'object') {
+        for (const key in parameters[2]) {
+            parameters[0].setAttribute(key, parameters[2][key])
         }
     }
+    return parameters
 }
 
-let getNode = (tag) =>{
-    if (tag.nodeType) {
-        return tag
+let getNodeFinale = (parameters) => {
+    if (parameters[0].nodeType) {
+        return parameters
     }
     throw 'Tag is not string or nodeElement'
 }
 
-let converter = (tag) =>{
-    if (typeof tag === 'string') {
-        return document.createElement(tag);
+let createElement = (parameters) => {
+    if (typeof parameters[0] === 'string') {
+        parameters[0] = document.createElement(parameters[0]);
     }
-    return getNode(tag)
+    return parameters
 }
 
-let splitNodes = (el, array) =>{
-    if(Array.isArray(array) && !array.map(node=>{
+let splitArrayNodes = (parameters) => {
+    if (Array.isArray(parameters[1]) && !parameters[1].map(node => {
         return node instanceof Node
-    }).includes(false)){
-        array.map(node => el.appendChild(node))
+    }).includes(false)) {
+        parameters[1].map(node => parameters[0].appendChild(node))
     }
-    if(Array.isArray(array) && !array.map(node=>node instanceof C).includes(false)){
-        array.map(node => el.appendChild(node.get()))
+    if (Array.isArray(parameters[1]) && !parameters[1].map(node => node instanceof C).includes(false)) {
+        parameters[1].map(node => el.appendChild(node.get()))
     }
-    return el
+    return parameters
 }
 
-let callback = (el, params) =>{
-    if(typeof params === 'function'){
-        params(el)
+let callback = (parameters) => {
+    if (typeof parameters[2] === 'function') {
+        parameters[2](parameters[0])
     }
+    return parameters
 }
 
-let getNodeComponent = (el, inner) =>{
-    if(inner instanceof C){
-        el.appendChild(inner.get())
+let getNodeFromComponent = (parameters) => {
+    if (parameters[1] instanceof C) {
+        parameters[0].appendChild(parameters[1].get())
     }
-    return el
+    return parameters
 }
 
-export let creator = function (tag, inner, params) {
-    let el = innerText(splitNodes(getNodeComponent(appendChild(converter(tag), inner), inner), inner), inner)
-    setAttribute(el, params)
-    callback(el, params)
-    return el;
+let runFunction = (parameters) => {
+    if (parameters[0] instanceof Function) {
+        parameters[0] = parameters[0]()
+    }
+    return parameters
+}
+
+let func = [
+    runFunction,
+    createElement,
+    getNodeFinale,
+    appendChild,
+    getNodeFromComponent,
+    splitArrayNodes,
+    innerText,
+    setAttribute,
+    callback
+]
+
+export let creator = function () {
+    return func.reduce(
+        (val, func) => func(val), 
+        [arguments[0],arguments[1],arguments[2]]
+    )[0];
 };
 
 export default creator

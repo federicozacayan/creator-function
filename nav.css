@@ -1,0 +1,13 @@
+.nav {
+    background-color: gray;
+}
+.nav > ul {
+    display: flex;
+    justify-content: flex-end;
+}
+.nav > ul > li{
+    padding: 0.25em ;
+}
+.nav > ul > li > a{
+    color: white
+}

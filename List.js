@@ -1,6 +1,6 @@
 import _ from './creator.js'
-import C from './C.js'
-class List extends C {
+import Props from './Props.js'
+class List extends Props {
     render(links) {
         return _('ul', links.map(link => _('li',
                 _('a', link, { href: `/${link}` })

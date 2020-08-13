@@ -21,4 +21,5 @@ function Foo(){
 }
 
 console.log(_(Foo));
+console.log(_(Foo()));
 

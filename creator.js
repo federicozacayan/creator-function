@@ -14,7 +14,7 @@ let createElement = (parameters) => {
     return parameters
 }
 
-let getNodeFinale = (parameters) => {
+let getNodeFinalle = (parameters) => {
     if (parameters[0].nodeType) {
         return parameters
     }
@@ -55,7 +55,7 @@ let innerText = (parameters) => {
 let setAttribute = (parameters) => {
     if (typeof parameters[2] === 'object') {
         for (const key in parameters[2]) {
-            parameters[0].setAttribute(key, parameters[2][key])
+            parameters[0].setAttribute(key, parameters[2][key])//todo missing validation
         }
     }
     return parameters
@@ -71,7 +71,7 @@ let callback = (parameters) => {
 let func = [
     runFunction,
     createElement,
-    getNodeFinale,
+    getNodeFinalle,
     appendChild,
     getNodeFromProps,
     splitArrayNodes,
@@ -86,5 +86,4 @@ export let creator = function () {
         [arguments[0], arguments[1], arguments[2]]
     )[0];
 };
-console.log('Are you Happy?'.split(' '))
 export default creator

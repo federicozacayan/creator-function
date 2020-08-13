@@ -1,19 +1,20 @@
+import _ from './creator.js'
 class CssLoader {
     constructor() {
         this.head = document.getElementsByTagName('HEAD')[0];
     }
 
     load(url){
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = url;
-        this.head.appendChild(link);
+        var link = _('link', null, {
+            rel:'stylesheet',
+            type:'text/css',
+            href:url,
+        });
+        _(this.head, link)
     }
+
     set(css){
-        var s = document.createElement("style");
-        s.innerHTML = css;
-        this.head.appendChild(s)
+        _(this.head, _("style", null, style => style.innerHTML = css))
     }
 }
 const cssLoader = new CssLoader()
